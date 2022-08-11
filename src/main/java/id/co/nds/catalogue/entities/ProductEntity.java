@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
+//test
 @Entity
 @Table(name = "ms_product")
 public class ProductEntity {
