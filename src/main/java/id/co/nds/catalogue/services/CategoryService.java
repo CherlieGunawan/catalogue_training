@@ -24,9 +24,9 @@ public class CategoryService implements Serializable {
     CategoryValidator categoryValidator = new CategoryValidator();
 
     public CategoryEntity add(CategoryModel categoryModel) throws ClientException {
-        categoryValidator.notNullCheckCategoryId(categoryModel.getId());
-        categoryValidator.nullCheckName(categoryModel.getName());
-        categoryValidator.validateName(categoryModel.getName());
+        // categoryValidator.notNullCheckCategoryId(categoryModel.getId());
+        // categoryValidator.nullCheckName(categoryModel.getName());
+        // categoryValidator.validateName(categoryModel.getName());
 
         Long count = categoryRepo.countByName(categoryModel.getName());
         if(count > 0) {
@@ -52,8 +52,8 @@ public class CategoryService implements Serializable {
     }
 
     public CategoryEntity findById(String id) throws ClientException, NotFoundException {
-        categoryValidator.nullCheckCategoryId(id);
-        categoryValidator.validateCategoryId(id);
+        // categoryValidator.nullCheckCategoryId(id);
+        // categoryValidator.validateCategoryId(id);
 
         CategoryEntity category = categoryRepo.findById(id).orElse(null);
         categoryValidator.nullCheckObject(category);
@@ -62,8 +62,8 @@ public class CategoryService implements Serializable {
     }
 
     public CategoryEntity edit(CategoryModel categoryModel) throws ClientException, NotFoundException {
-        categoryValidator.nullCheckCategoryId(categoryModel.getId());
-        categoryValidator.validateCategoryId(categoryModel.getId());
+        // categoryValidator.nullCheckCategoryId(categoryModel.getId());
+        // categoryValidator.validateCategoryId(categoryModel.getId());
 
         if(!categoryRepo.existsById(categoryModel.getId())) {
             throw new NotFoundException("Cannot find category with id: " + categoryModel.getId());
@@ -73,7 +73,7 @@ public class CategoryService implements Serializable {
         category = findById(categoryModel.getId());
 
         if(categoryModel.getName() != null) {
-            categoryValidator.validateName(categoryModel.getName());
+            // categoryValidator.validateName(categoryModel.getName());
 
             Long count = categoryRepo.countByName(categoryModel.getName());
             if(count > 0) {
@@ -90,8 +90,8 @@ public class CategoryService implements Serializable {
     }
 
     public CategoryEntity delete(CategoryModel categoryModel) throws ClientException, NotFoundException {
-        categoryValidator.nullCheckCategoryId(categoryModel.getId());
-        categoryValidator.validateCategoryId(categoryModel.getId());
+        // categoryValidator.nullCheckCategoryId(categoryModel.getId());
+        // categoryValidator.validateCategoryId(categoryModel.getId());
 
         if(!categoryRepo.existsById(categoryModel.getId())) {
             throw new NotFoundException("Cannot find category with id: " + categoryModel.getId());

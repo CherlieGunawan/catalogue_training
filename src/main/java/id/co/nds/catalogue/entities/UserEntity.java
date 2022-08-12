@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -20,6 +21,7 @@ public class UserEntity {
     @Column(name = "fullname")
     private String fullname;
 
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
     @Column(name = "role_id")
     private String roleId;
 

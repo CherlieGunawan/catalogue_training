@@ -23,9 +23,9 @@ public class RoleService implements Serializable {
     RoleValidator roleValidator = new RoleValidator();
 
     public RoleEntity add(RoleModel roleModel) throws ClientException {
-        roleValidator.notNullCheckRoleId(roleModel.getId());
-        roleValidator.nullCheckName(roleModel.getName());
-        roleValidator.validateName(roleModel.getName());
+        // roleValidator.notNullCheckRoleId(roleModel.getId());
+        // roleValidator.nullCheckName(roleModel.getName());
+        // roleValidator.validateName(roleModel.getName());
 
         Long count = roleRepo.countByName(roleModel.getName());
         if(count > 0) {
@@ -48,8 +48,8 @@ public class RoleService implements Serializable {
     }
 
     public RoleEntity findById(String id) throws ClientException, NotFoundException {
-        roleValidator.nullCheckRoleId(id);
-        roleValidator.validateRoleId(id);
+        // roleValidator.nullCheckRoleId(id);
+        // roleValidator.validateRoleId(id);
 
         RoleEntity role = roleRepo.findById(id).orElse(null);
         roleValidator.nullCheckObject(role);
@@ -58,8 +58,8 @@ public class RoleService implements Serializable {
     }
 
     public RoleEntity edit(RoleModel roleModel) throws ClientException, NotFoundException {
-        roleValidator.nullCheckRoleId(roleModel.getId());
-        roleValidator.validateRoleId(roleModel.getId());
+        // roleValidator.nullCheckRoleId(roleModel.getId());
+        // roleValidator.validateRoleId(roleModel.getId());
 
         if(!roleRepo.existsById(roleModel.getId())) {
             throw new NotFoundException("Cannot find role with id: " + roleModel.getId());
@@ -69,7 +69,7 @@ public class RoleService implements Serializable {
         role = findById(roleModel.getId());
 
         if(roleModel.getName() != null) {
-            roleValidator.validateName(roleModel.getName());
+            // roleValidator.validateName(roleModel.getName());
 
             Long count = roleRepo.countByName(roleModel.getName());
             if(count > 0) {
@@ -86,8 +86,8 @@ public class RoleService implements Serializable {
     }
 
     public RoleEntity delete(RoleModel roleModel) throws ClientException, NotFoundException {
-        roleValidator.nullCheckRoleId(roleModel.getId());
-        roleValidator.validateRoleId(roleModel.getId());
+        // roleValidator.nullCheckRoleId(roleModel.getId());
+        // roleValidator.validateRoleId(roleModel.getId());
 
         if(!roleRepo.existsById(roleModel.getId())) {
             throw new NotFoundException("Cannot find role with id: " + roleModel.getId());

@@ -1,5 +1,7 @@
 package id.co.nds.catalogue.repos;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,4 +29,9 @@ public interface ProductRepo extends JpaRepository<ProductEntity, Integer>, JpaS
             + "', deleter_id = ?2 , deleted_date = NOW() "
             + "WHERE id = ?1", nativeQuery = true)
     Integer doDelete(Integer id, Integer deleterId);
+
+    @Query(value = "SELECT p.*, c.name AS category_name FROM ms_product AS p "
+            + "JOIN ms_category AS c ON p.category_id = c.id "
+            + "WHERE p.category_id = ?1", nativeQuery = true)
+    List<ProductEntity> findProductsByCategoryId(String categoryId);
 }

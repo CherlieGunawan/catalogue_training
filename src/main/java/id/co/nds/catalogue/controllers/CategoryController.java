@@ -2,9 +2,13 @@ package id.co.nds.catalogue.controllers;
 
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import id.co.nds.catalogue.controllers.ControllerGroup.DeletingById;
+import id.co.nds.catalogue.controllers.ControllerGroup.PostingNew;
+import id.co.nds.catalogue.controllers.ControllerGroup.UpdatingById;
 import id.co.nds.catalogue.entities.CategoryEntity;
 import id.co.nds.catalogue.exceptions.ClientException;
 import id.co.nds.catalogue.exceptions.NotFoundException;
@@ -22,13 +29,14 @@ import id.co.nds.catalogue.models.ResponseModel;
 import id.co.nds.catalogue.services.CategoryService;
 
 @RestController
+@Validated
 @RequestMapping("/category")
 public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
     @PostMapping("/add")
-    public ResponseEntity<ResponseModel> postCategoryController(@RequestBody CategoryModel categoryModel) {
+    public ResponseEntity<ResponseModel> postCategoryController(@Validated(PostingNew.class) @RequestBody CategoryModel categoryModel) {
         try{
             CategoryEntity category = categoryService.add(categoryModel);
 
@@ -69,7 +77,10 @@ public class CategoryController {
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<ResponseModel> getCategoryByIdController(@PathVariable String id) {
+    public ResponseEntity<ResponseModel> getCategoryByIdController(
+            @NotBlank(message = "Category ID is required")
+            @Pattern(regexp = "^PC[0-9]{4}$", message = "Category ID must start with PC followed by four digits of number")
+            @PathVariable String id) {
         try {
             CategoryEntity category = categoryService.findById(id);
 
@@ -97,7 +108,7 @@ public class CategoryController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ResponseModel> putCategoryController(@RequestBody CategoryModel categoryModel) {
+    public ResponseEntity<ResponseModel> putCategoryController(@Validated(UpdatingById.class) @RequestBody CategoryModel categoryModel) {
         try {
             CategoryEntity category = categoryService.edit(categoryModel);
 
@@ -125,7 +136,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponseModel> deleteCategoryController (@RequestBody CategoryModel categoryModel) {
+    public ResponseEntity<ResponseModel> deleteCategoryController (@Validated(DeletingById.class) @RequestBody CategoryModel categoryModel) {
         try {
             CategoryEntity category = categoryService.delete(categoryModel);
 

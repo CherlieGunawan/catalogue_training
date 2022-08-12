@@ -17,7 +17,7 @@ import id.co.nds.catalogue.models.UserModel;
 import id.co.nds.catalogue.repos.UserInfoRepo;
 import id.co.nds.catalogue.repos.UserRepo;
 import id.co.nds.catalogue.repos.specs.UserSpec;
-import id.co.nds.catalogue.validators.RoleValidator;
+// import id.co.nds.catalogue.validators.RoleValidator;
 import id.co.nds.catalogue.validators.UserValidator;
 
 @Service
@@ -29,17 +29,17 @@ public class UserService implements Serializable {
     private UserInfoRepo userInfoRepo;
 
     UserValidator userValidator = new UserValidator();
-    RoleValidator roleValidator = new RoleValidator();
+    // RoleValidator roleValidator = new RoleValidator();
 
     public UserEntity add(UserModel userModel) throws ClientException {
-        userValidator.notNullCheckUserId(userModel.getId());
-        userValidator.nullCheckFullname(userModel.getFullname());
-        userValidator.validateFullname(userModel.getFullname());
-        userValidator.nullCheckRoleId(userModel.getRoleId());
-        userValidator.validateRoleId(userModel.getRoleId());
+        // userValidator.notNullCheckUserId(userModel.getId());
+        // userValidator.nullCheckFullname(userModel.getFullname());
+        // userValidator.validateFullname(userModel.getFullname());
+        // userValidator.nullCheckRoleId(userModel.getRoleId());
+        // userValidator.validateRoleId(userModel.getRoleId());
 
         if(userModel.getCallNumber() != null) {
-            userValidator.validateCallNumber(userModel.getCallNumber());
+            // userValidator.validateCallNumber(userModel.getCallNumber());
             
             Long count = userRepo.countByCallNumber(userModel.getCallNumber());
             if(count > 0) {
@@ -70,9 +70,9 @@ public class UserService implements Serializable {
     }
 
     //NEW JOIN
-    public List<UserInfoEntity> findAllNoActiveByRole(String roleName) throws ClientException, NotFoundException {
-        roleValidator.nullCheckName(roleName);
-        roleValidator.validateName(roleName);
+    public List<UserInfoEntity> findUsersByRoleNameWhereNoActive(String roleName) throws ClientException, NotFoundException {
+        // roleValidator.nullCheckName(roleName);
+        // roleValidator.validateName(roleName);
 
         List<UserInfoEntity> user = userInfoRepo.findUsersByRoleNameWhereNoActive(roleName);
         userValidator.nullCheckObject(user);
@@ -80,9 +80,9 @@ public class UserService implements Serializable {
         return user;
     }
 
-    public List<UserInfoEntity> findAllByRole(String roleName) throws ClientException, NotFoundException {
-        roleValidator.nullCheckName(roleName);
-        roleValidator.validateName(roleName);
+    public List<UserInfoEntity> findUsersByRoleName(String roleName) throws ClientException, NotFoundException {
+        // roleValidator.nullCheckName(roleName);
+        // roleValidator.validateName(roleName);
 
         List<Object[]> userObject = userInfoRepo.findUsersByRoleName(roleName);
         userValidator.nullCheckObject(userObject);
@@ -110,9 +110,25 @@ public class UserService implements Serializable {
     }
     //NEW JOIN
 
+    //NEW JOIN 2
+    public List<UserEntity> findAllUserByRoleName(String roleName) throws ClientException, NotFoundException {
+        List<UserEntity> user = userRepo.findAllUserByRoleName(roleName);
+        userValidator.nullCheckObject(user);
+
+        return user;
+    }
+
+    public List<UserEntity> findAllUserByRoleNameWhereNoActive(String roleName) throws ClientException, NotFoundException {
+        List<UserEntity> user = userRepo.findAllUserByRoleNameWhereNoActive(roleName);
+        userValidator.nullCheckObject(user);
+
+        return user;
+    }
+    //NEW JOIN 2
+
     public UserEntity findById(Integer id) throws ClientException, NotFoundException {
-        userValidator.nullCheckUserId(id);
-        userValidator.validateUserId(id);
+        // userValidator.nullCheckUserId(id);
+        // userValidator.validateUserId(id);
 
         UserEntity user = userRepo.findById(id).orElse(null);
         userValidator.nullCheckObject(user);
@@ -121,8 +137,8 @@ public class UserService implements Serializable {
     }
 
     public UserEntity edit(UserModel userModel) throws ClientException, NotFoundException {
-        userValidator.nullCheckUserId(userModel.getId());
-        userValidator.validateUserId(userModel.getId());
+        // userValidator.nullCheckUserId(userModel.getId());
+        // userValidator.validateUserId(userModel.getId());
 
         if(!userRepo.existsById(userModel.getId())) {
             throw new NotFoundException("Cannot find user with id: " + userModel.getId());
@@ -132,23 +148,23 @@ public class UserService implements Serializable {
         user = findById(userModel.getId());
 
         if(userModel.getFullname() != null) {
-            userValidator.validateFullname(userModel.getFullname());
+            // userValidator.validateFullname(userModel.getFullname());
 
             user.setFullname(userModel.getFullname());
         }
 
         if(userModel.getRoleId() != null) {
-            userValidator.validateRoleId(userModel.getRoleId());
+            // userValidator.validateRoleId(userModel.getRoleId());
 
             user.setRoleId(userModel.getRoleId());
         }
 
         if(userModel.getCallNumber() != null) {
-            userValidator.validateCallNumber(userModel.getCallNumber());
+            // userValidator.validateCallNumber(userModel.getCallNumber());
 
             Long count = userRepo.countByCallNumber(userModel.getCallNumber());
             if(count > 0) {
-                throw new ClientException("Call namber already exists");
+                throw new ClientException("Call number already exists");
             }
 
             user.setCallNumber(userModel.getCallNumber());
@@ -163,8 +179,8 @@ public class UserService implements Serializable {
     }
 
     public UserEntity delete(UserModel userModel) throws ClientException, NotFoundException {
-        userValidator.nullCheckUserId(userModel.getId());
-        userValidator.validateUserId(userModel.getId());
+        // userValidator.nullCheckUserId(userModel.getId());
+        // userValidator.validateUserId(userModel.getId());
 
         if(!userRepo.existsById(userModel.getId())) {
             throw new NotFoundException("Cannot find user with id: " + userModel.getId());

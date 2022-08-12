@@ -17,7 +17,7 @@ import id.co.nds.catalogue.models.ProductModel;
 import id.co.nds.catalogue.repos.ProductInfoRepo;
 import id.co.nds.catalogue.repos.ProductRepo;
 import id.co.nds.catalogue.repos.specs.ProductSpec;
-import id.co.nds.catalogue.validators.CategoryValidator;
+// import id.co.nds.catalogue.validators.CategoryValidator;
 import id.co.nds.catalogue.validators.ProductValidator;
 
 @Service
@@ -29,16 +29,16 @@ public class ProductService implements Serializable {
     private ProductInfoRepo productInfoRepo;
 
     ProductValidator productValidator = new ProductValidator();
-    CategoryValidator categoryValidator = new CategoryValidator();
+    // CategoryValidator categoryValidator = new CategoryValidator();
 
     public ProductEntity add(ProductModel productModel) throws ClientException {
-        productValidator.notNullCheckProductId(productModel.getId());
-        productValidator.nullCheckName(productModel.getName());
-        productValidator.validateName(productModel.getName());
-        productValidator.nullCheckQuantity(productModel.getQuantity());
-        productValidator.validateQuantity(productModel.getQuantity());
-        productValidator.nullCheckCategoryId(productModel.getCategoryId());
-        productValidator.validateCategoryId(productModel.getCategoryId());
+        // productValidator.notNullCheckProductId(productModel.getId());
+        // productValidator.nullCheckName(productModel.getName());
+        // productValidator.validateName(productModel.getName());
+        // productValidator.nullCheckQuantity(productModel.getQuantity());
+        // productValidator.validateQuantity(productModel.getQuantity());
+        // productValidator.nullCheckCategoryId(productModel.getCategoryId());
+        // productValidator.validateCategoryId(productModel.getCategoryId());
 
         Long count = productRepo.countByName(productModel.getName());
         if(count > 0) {
@@ -75,8 +75,8 @@ public class ProductService implements Serializable {
 
     //NEW JOIN
     public List<ProductInfoEntity> findAllByCategory(String categoryId) throws ClientException, NotFoundException {
-        categoryValidator.nullCheckCategoryId(categoryId);
-        categoryValidator.validateCategoryId(categoryId);
+        // categoryValidator.nullCheckCategoryId(categoryId);
+        // categoryValidator.validateCategoryId(categoryId);
 
         List<ProductInfoEntity> product = productInfoRepo.findAllByCategory(categoryId);
         productValidator.nullCheckObject(product);
@@ -85,9 +85,21 @@ public class ProductService implements Serializable {
     }
     //NEW JOIN
 
+    //NEW JOIN 2
+    public List<ProductEntity> findProductsByCategoryId(String categoryId) throws ClientException, NotFoundException {
+        // categoryValidator.nullCheckCategoryId(categoryId);
+        // categoryValidator.validateCategoryId(categoryId);
+
+        List<ProductEntity> product = productRepo.findProductsByCategoryId(categoryId);
+        productValidator.nullCheckObject(product);
+
+        return product;
+    }
+    //NEW JOIN 2
+
     public ProductEntity findById(Integer id) throws ClientException, NotFoundException {
-        productValidator.nullCheckProductId(id);
-        productValidator.validateProductId(id);
+        // productValidator.nullCheckProductId(id);
+        // productValidator.validateProductId(id);
 
         ProductEntity product = productRepo.findById(id).orElse(null);
         productValidator.nullCheckObject(product);
@@ -96,8 +108,8 @@ public class ProductService implements Serializable {
     }
 
     public ProductEntity edit(ProductModel productModel) throws ClientException, NotFoundException {
-        productValidator.nullCheckProductId(productModel.getId());
-        productValidator.validateProductId(productModel.getId());
+        // productValidator.nullCheckProductId(productModel.getId());
+        // productValidator.validateProductId(productModel.getId());
 
         if(!productRepo.existsById(productModel.getId())) {
             throw new NotFoundException("Cannot find product with id: " + productModel.getId());
@@ -107,7 +119,7 @@ public class ProductService implements Serializable {
         product = findById(productModel.getId());
 
         if(productModel.getName() != null) {
-            productValidator.validateName(productModel.getName());
+            // productValidator.validateName(productModel.getName());
 
             Long count = productRepo.countByName(productModel.getName());
             if(count > 0) {
@@ -118,13 +130,13 @@ public class ProductService implements Serializable {
         }
 
         if(productModel.getQuantity() != null) {
-            productValidator.validateQuantity(productModel.getQuantity());
+            // productValidator.validateQuantity(productModel.getQuantity());
 
             product.setQuantity(productModel.getQuantity());
         }
 
         if(productModel.getCategoryId() != null) {
-            productValidator.validateCategoryId(productModel.getCategoryId());
+            // productValidator.validateCategoryId(productModel.getCategoryId());
 
             product.setCategoryId(productModel.getCategoryId());
         }
@@ -138,8 +150,8 @@ public class ProductService implements Serializable {
     }
 
     public ProductEntity delete(ProductModel productModel) throws ClientException, NotFoundException {
-        productValidator.nullCheckProductId(productModel.getId());
-        productValidator.validateProductId(productModel.getId());
+        // productValidator.nullCheckProductId(productModel.getId());
+        // productValidator.validateProductId(productModel.getId());
 
         if(!productRepo.existsById(productModel.getId())) {
             throw new NotFoundException("Cannot find product with id: " + productModel.getId());

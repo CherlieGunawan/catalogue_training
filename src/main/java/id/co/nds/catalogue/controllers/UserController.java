@@ -2,9 +2,15 @@ package id.co.nds.catalogue.controllers;
 
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import id.co.nds.catalogue.controllers.ControllerGroup.DeletingById;
+import id.co.nds.catalogue.controllers.ControllerGroup.GettingAllByCriteria;
+import id.co.nds.catalogue.controllers.ControllerGroup.PostingNew;
+import id.co.nds.catalogue.controllers.ControllerGroup.UpdatingById;
 import id.co.nds.catalogue.entities.UserEntity;
 import id.co.nds.catalogue.entities.UserInfoEntity;
 import id.co.nds.catalogue.exceptions.ClientException;
@@ -25,6 +35,7 @@ import id.co.nds.catalogue.services.RoleService;
 import id.co.nds.catalogue.services.UserService;
 
 @RestController
+@Validated
 @RequestMapping("/user")
 public class UserController {
     @Autowired
@@ -34,7 +45,7 @@ public class UserController {
     RoleService roleService;
 
     @PostMapping("/add")
-    public ResponseEntity<ResponseModel> postUserController(@RequestBody UserModel userModel) {
+    public ResponseEntity<ResponseModel> postUserController(@Validated(PostingNew.class) @RequestBody UserModel userModel) {
         try {
             UserEntity user = userService.add(userModel);
 
@@ -75,7 +86,7 @@ public class UserController {
     }
 
     @GetMapping("/get/search")
-    public ResponseEntity<ResponseModel> searchUsersController(@RequestBody UserModel userModel) {
+    public ResponseEntity<ResponseModel> searchUsersController(@Validated(GettingAllByCriteria.class) @RequestBody UserModel userModel) {
         try {
             List<UserEntity> user = userService.findAllByCriteria(userModel);
 
@@ -94,9 +105,12 @@ public class UserController {
 
     //NEW JOIN
     @GetMapping("/get/nonactive")
-    public ResponseEntity<ResponseModel> getAllNoActiveByRoleController(@RequestParam String roleName) {
+    public ResponseEntity<ResponseModel> findUsersByRoleNameWhereNoActive(
+            @NotBlank(message = "Role name is required")
+            @Pattern(regexp = "^[a-zA-Z0-9]{1,}$", message = "Role name is required")
+            @RequestParam String roleName) {
         try {
-            List<UserInfoEntity> user = userService.findAllNoActiveByRole(roleName);
+            List<UserInfoEntity> user = userService.findUsersByRoleNameWhereNoActive(roleName);
 
             ResponseModel response = new ResponseModel();
             response.setMsg("Request successful");
@@ -122,9 +136,12 @@ public class UserController {
     }
 
     @GetMapping("/get/info")
-    public ResponseEntity<ResponseModel> getAllByRoleController(@RequestParam String roleName) {
+    public ResponseEntity<ResponseModel> findUsersByRoleName(
+            @NotBlank(message = "Role name is required")
+            @Pattern(regexp = "^[a-zA-Z0-9]{1,}$", message = "Role name is required")
+            @RequestParam String roleName) {
         try {
-            List<UserInfoEntity> user = userService.findAllByRole(roleName);
+            List<UserInfoEntity> user = userService.findUsersByRoleName(roleName);
 
             ResponseModel response = new ResponseModel();
             response.setMsg("Request successful");
@@ -150,8 +167,75 @@ public class UserController {
     }
     //NEW JOIN
 
+    //NEW JOIN 2
+    @GetMapping("/get/all/nonactive")
+    public ResponseEntity<ResponseModel> findAllUserByRoleNameWhereNoActive(
+            @NotBlank(message = "Role name is required")
+            @Pattern(regexp = "^[a-zA-Z0-9]{1,}$", message = "Role name is required")
+            @RequestParam String roleName) {
+        try {
+            List<UserEntity> user = userService.findAllUserByRoleNameWhereNoActive(roleName);
+
+            ResponseModel response = new ResponseModel();
+            response.setMsg("Request successful");
+            response.setData(user);
+            return ResponseEntity.ok(response);
+        }
+        catch (ClientException e) {
+            ResponseModel response = new ResponseModel();
+            response.setMsg(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+        catch (NotFoundException e) {
+            ResponseModel response = new ResponseModel();
+            response.setMsg(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        catch (Exception e) {
+            ResponseModel response = new ResponseModel();
+            response.setMsg("Sorry, there is a failure on our server.");
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+
+    @GetMapping("/get/all/info")
+    public ResponseEntity<ResponseModel> findAllUserByRoleName(
+            @NotBlank(message = "Role name is required")
+            @Pattern(regexp = "^[a-zA-Z0-9]{1,}$", message = "Role name is required")
+            @RequestParam String roleName) {
+        try {
+            List<UserEntity> user = userService.findAllUserByRoleName(roleName);
+
+            ResponseModel response = new ResponseModel();
+            response.setMsg("Request successful");
+            response.setData(user);
+            return ResponseEntity.ok(response);
+        }
+        catch (ClientException e) {
+            ResponseModel response = new ResponseModel();
+            response.setMsg(e.getMessage());
+            return ResponseEntity.badRequest().body(response);
+        }
+        catch (NotFoundException e) {
+            ResponseModel response = new ResponseModel();
+            response.setMsg(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        catch (Exception e) {
+            ResponseModel response = new ResponseModel();
+            response.setMsg("Sorry, there is a failure on our server.");
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(response);
+        }
+    }
+    //NEW JOIN 2
+
     @GetMapping("/get/{id}")
-    public ResponseEntity<ResponseModel> getUserByIdController(@PathVariable Integer id) {
+    public ResponseEntity<ResponseModel> getUserByIdController(
+            @NotNull(message = "User ID is required")
+            @Range(min = 1, message = "User ID starts from 1")
+            @PathVariable Integer id) {
         try {
             UserEntity user = userService.findById(id);
 
@@ -179,7 +263,7 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ResponseModel> putUserController(@RequestBody UserModel userModel) {
+    public ResponseEntity<ResponseModel> putUserController(@Validated(UpdatingById.class) @RequestBody UserModel userModel) {
         try {
             UserEntity user = userService.edit(userModel);
 
@@ -207,7 +291,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponseModel> deleteUserController(@RequestBody UserModel userModel) {
+    public ResponseEntity<ResponseModel> deleteUserController(@Validated(DeletingById.class) @RequestBody UserModel userModel) {
         try {
             UserEntity user = userService.delete(userModel);
 
