@@ -8,7 +8,6 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,62 +44,33 @@ public class UserController {
     RoleService roleService;
 
     @PostMapping("/add")
-    public ResponseEntity<ResponseModel> postUserController(@Validated(PostingNew.class) @RequestBody UserModel userModel) {
-        try {
-            UserEntity user = userService.add(userModel);
+    public ResponseEntity<ResponseModel> postUserController(@Validated(PostingNew.class) @RequestBody UserModel userModel) throws ClientException {
+        UserEntity user = userService.add(userModel);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("New user is successfully added");
-            response.setData(user);
-            return ResponseEntity.ok(response);
-        }
-        catch (ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("New user is successfully added");
+        response.setData(user);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/get")
     public ResponseEntity<ResponseModel> getAllUsersController() {
-        try {
-            List<UserEntity> user = userService.findAll();
+        List<UserEntity> user = userService.findAll();
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Request successful");
-            response.setData(user);
-            return ResponseEntity.ok(response);
-        }
-        catch (Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Request successful");
+        response.setData(user);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/get/search")
     public ResponseEntity<ResponseModel> searchUsersController(@Validated(GettingAllByCriteria.class) @RequestBody UserModel userModel) {
-        try {
-            List<UserEntity> user = userService.findAllByCriteria(userModel);
+        List<UserEntity> user = userService.findAllByCriteria(userModel);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Request successful");
-            response.setData(user);
-            return ResponseEntity.ok(response);
-        }
-        catch (Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Request successful");
+        response.setData(user);
+        return ResponseEntity.ok(response);
     }
 
     //NEW JOIN
@@ -108,62 +78,26 @@ public class UserController {
     public ResponseEntity<ResponseModel> findUsersByRoleNameWhereNoActive(
             @NotBlank(message = "Role name is required")
             @Pattern(regexp = "^[a-zA-Z0-9]{1,}$", message = "Role name is required")
-            @RequestParam String roleName) {
-        try {
-            List<UserInfoEntity> user = userService.findUsersByRoleNameWhereNoActive(roleName);
+            @RequestParam String roleName) throws ClientException, NotFoundException {
+        List<UserInfoEntity> user = userService.findUsersByRoleNameWhereNoActive(roleName);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Request successful");
-            response.setData(user);
-            return ResponseEntity.ok(response);
-        }
-        catch (ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        catch (Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Request successful");
+        response.setData(user);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/get/info")
     public ResponseEntity<ResponseModel> findUsersByRoleName(
             @NotBlank(message = "Role name is required")
             @Pattern(regexp = "^[a-zA-Z0-9]{1,}$", message = "Role name is required")
-            @RequestParam String roleName) {
-        try {
-            List<UserInfoEntity> user = userService.findUsersByRoleName(roleName);
+            @RequestParam String roleName) throws ClientException, NotFoundException {
+        List<UserInfoEntity> user = userService.findUsersByRoleName(roleName);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Request successful");
-            response.setData(user);
-            return ResponseEntity.ok(response);
-        }
-        catch (ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        catch (Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Request successful");
+        response.setData(user);
+        return ResponseEntity.ok(response);
     }
     //NEW JOIN
 
@@ -172,62 +106,26 @@ public class UserController {
     public ResponseEntity<ResponseModel> findAllUserByRoleNameWhereNoActive(
             @NotBlank(message = "Role name is required")
             @Pattern(regexp = "^[a-zA-Z0-9]{1,}$", message = "Role name is required")
-            @RequestParam String roleName) {
-        try {
-            List<UserEntity> user = userService.findAllUserByRoleNameWhereNoActive(roleName);
+            @RequestParam String roleName) throws ClientException, NotFoundException {
+        List<UserEntity> user = userService.findAllUserByRoleNameWhereNoActive(roleName);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Request successful");
-            response.setData(user);
-            return ResponseEntity.ok(response);
-        }
-        catch (ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        catch (Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Request successful");
+        response.setData(user);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/get/all/info")
     public ResponseEntity<ResponseModel> findAllUserByRoleName(
             @NotBlank(message = "Role name is required")
             @Pattern(regexp = "^[a-zA-Z0-9]{1,}$", message = "Role name is required")
-            @RequestParam String roleName) {
-        try {
-            List<UserEntity> user = userService.findAllUserByRoleName(roleName);
+            @RequestParam String roleName) throws ClientException, NotFoundException {
+        List<UserEntity> user = userService.findAllUserByRoleName(roleName);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Request successful");
-            response.setData(user);
-            return ResponseEntity.ok(response);
-        }
-        catch (ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        catch (Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Request successful");
+        response.setData(user);
+        return ResponseEntity.ok(response);
     }
     //NEW JOIN 2
 
@@ -235,86 +133,32 @@ public class UserController {
     public ResponseEntity<ResponseModel> getUserByIdController(
             @NotNull(message = "User ID is required")
             @Range(min = 1, message = "User ID starts from 1")
-            @PathVariable Integer id) {
-        try {
-            UserEntity user = userService.findById(id);
+            @PathVariable Integer id) throws ClientException, NotFoundException {
+        UserEntity user = userService.findById(id);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Request successful");
-            response.setData(user);
-            return ResponseEntity.ok(response);
-        }
-        catch (ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        catch (Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Request successful");
+        response.setData(user);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ResponseModel> putUserController(@Validated(UpdatingById.class) @RequestBody UserModel userModel) {
-        try {
-            UserEntity user = userService.edit(userModel);
+    public ResponseEntity<ResponseModel> putUserController(@Validated(UpdatingById.class) @RequestBody UserModel userModel) throws ClientException, NotFoundException {
+        UserEntity user = userService.edit(userModel);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("User is successfully updated");
-            response.setData(user);
-            return ResponseEntity.ok(response);
-        }
-        catch (ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        catch (Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("User is successfully updated");
+        response.setData(user);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponseModel> deleteUserController(@Validated(DeletingById.class) @RequestBody UserModel userModel) {
-        try {
-            UserEntity user = userService.delete(userModel);
+    public ResponseEntity<ResponseModel> deleteUserController(@Validated(DeletingById.class) @RequestBody UserModel userModel) throws ClientException, NotFoundException {
+        UserEntity user = userService.delete(userModel);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("User is successfully deleted");
-            response.setData(user);
-            return ResponseEntity.ok(response);
-        }
-        catch (ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        catch (Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("User is successfully deleted");
+        response.setData(user);
+        return ResponseEntity.ok(response);
     }
 }

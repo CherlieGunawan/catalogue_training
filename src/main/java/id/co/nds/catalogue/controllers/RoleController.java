@@ -6,7 +6,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,130 +35,55 @@ public class RoleController {
     RoleService roleService;
 
     @PostMapping("/add")
-    public ResponseEntity<ResponseModel> postRoleController(@Validated(PostingNew.class) @RequestBody RoleModel roleModel) {
-        try{
-            RoleEntity role = roleService.add(roleModel);
+    public ResponseEntity<ResponseModel> postRoleController(@Validated(PostingNew.class) @RequestBody RoleModel roleModel) throws ClientException {
+        RoleEntity role = roleService.add(roleModel);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("New role is successfully added");
-            response.setData(role);
-            return ResponseEntity.ok(response);
-        }
-        catch(ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch(Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("New role is successfully added");
+        response.setData(role);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/get")
     public ResponseEntity<ResponseModel> getAllRoleController() {
-        try {
-            List<RoleEntity> role = roleService.findAll();
+        List<RoleEntity> role = roleService.findAll();
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Request successfully");
-            response.setData(role);
-            return ResponseEntity.ok(response);
-        }
-        catch(Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Request successfully");
+        response.setData(role);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<ResponseModel> getRoleByIdController(
             @NotBlank(message = "Role ID is required")
             @Pattern(regexp = "^R[0-9]{4}$", message = "Role ID must start with R followed by four digits of number")
-            @PathVariable String id) {
-        try {
-            RoleEntity role = roleService.findById(id);
+            @PathVariable String id) throws ClientException, NotFoundException {
+        RoleEntity role = roleService.findById(id);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Request successfully");
-            response.setData(role);
-            return ResponseEntity.ok(response);
-        }
-        catch(ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        catch(Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Request successfully");
+        response.setData(role);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ResponseModel> putRoleController(@Validated(UpdatingById.class) @RequestBody RoleModel roleModel) {
-        try {
-            RoleEntity role = roleService.edit(roleModel);
+    public ResponseEntity<ResponseModel> putRoleController(@Validated(UpdatingById.class) @RequestBody RoleModel roleModel) throws ClientException, NotFoundException {
+        RoleEntity role = roleService.edit(roleModel);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Role is successfully updated");
-            response.setData(role);
-            return ResponseEntity.ok(response);
-        }
-        catch(ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        catch(Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Role is successfully updated");
+        response.setData(role);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponseModel> deleteRoleController (@Validated(DeletingById.class) @RequestBody RoleModel roleModel) {
-        try {
-            RoleEntity role = roleService.delete(roleModel);
+    public ResponseEntity<ResponseModel> deleteRoleController (@Validated(DeletingById.class) @RequestBody RoleModel roleModel) throws ClientException, NotFoundException {
+        RoleEntity role = roleService.delete(roleModel);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Role is successfully deleted");
-            response.setData(role);
-            return ResponseEntity.ok(response);
-        }
-        catch(ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        catch(Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Role is successfully deleted");
+        response.setData(role);
+        return ResponseEntity.ok(response);
     }
 }

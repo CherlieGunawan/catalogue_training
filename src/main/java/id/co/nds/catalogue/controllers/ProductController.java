@@ -7,7 +7,6 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,147 +43,64 @@ public class ProductController {
 
     @PostMapping("/add")
     public ResponseEntity<ResponseModel> postProductController(@Validated(PostingNew.class) @RequestBody ProductModel productModel) throws ClientException, InvalidFormatException {
-        try {
-            ProductEntity product = productService.add(productModel);
+        ProductEntity product = productService.add(productModel);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("New product is successfully added");
-            response.setData(product);
-            return ResponseEntity.ok(response);
-        }
-        catch (ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("New product is successfully added");
+        response.setData(product);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/get")
     public ResponseEntity<ResponseModel> getAllProductsController() {
-        try {
-            List<ProductEntity> products = productService.findAll();
-            
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Request successfully");
-            response.setData(products);
-            return ResponseEntity.ok(response);
-        }
-        catch (Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        List<ProductEntity> products = productService.findAll();
+        
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Request successfully");
+        response.setData(products);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/get/search")
     public ResponseEntity<ResponseModel> searchProductsController(@Validated(GettingAllByCriteria.class) @RequestBody ProductModel productModel) {
-        try {
-            List<ProductEntity> products = productService.findAllByCriteria(productModel);
-            
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Request successfully");
-            response.setData(products);
-            return ResponseEntity.ok(response);
-        }
-        catch (Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        List<ProductEntity> products = productService.findAllByCriteria(productModel);
+        
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Request successfully");
+        response.setData(products);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<ResponseModel> getProductByIdController(
             @Range(min = 1, message = "Product ID starts from 1")
-            @PathVariable Integer id) {
-        try {
-            ProductEntity product = productService.findById(id);
+            @PathVariable Integer id) throws ClientException, NotFoundException {
+        ProductEntity product = productService.findById(id);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Request successfully");
-            response.setData(product);
-            return ResponseEntity.ok(response);
-        }
-        catch (ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        catch (Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Request successfully");
+        response.setData(product);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ResponseModel> putProductController(@Validated(UpdatingById.class) @RequestBody ProductModel productModel) {
-        try {
-            ProductEntity product = productService.edit(productModel);
+    public ResponseEntity<ResponseModel> putProductController(@Validated(UpdatingById.class) @RequestBody ProductModel productModel) throws ClientException, NotFoundException {
+        ProductEntity product = productService.edit(productModel);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Product is successfully updated");
-            response.setData(product);
-            return ResponseEntity.ok(response);
-        }
-        catch (ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        catch (Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Product is successfully updated");
+        response.setData(product);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponseModel> deleteProductController(@Validated(DeletingById.class) @RequestBody ProductModel productModel) {
-        try {
-            ProductEntity product = productService.delete(productModel);
+    public ResponseEntity<ResponseModel> deleteProductController(@Validated(DeletingById.class) @RequestBody ProductModel productModel) throws ClientException, NotFoundException {
+        ProductEntity product = productService.delete(productModel);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Product is successfully deleted");
-            response.setData(product);
-            return ResponseEntity.ok(response);
-        }
-        catch (ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        catch (Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Product is successfully deleted");
+        response.setData(product);
+        return ResponseEntity.ok(response);
     }
 
     //NEW JOIN
@@ -192,31 +108,13 @@ public class ProductController {
     public ResponseEntity<ResponseModel> getAllByCategoryController(
             @NotBlank(message = "Product category ID is required")
             @Pattern(regexp = "^PC[0-9]{4}$", message = "Product category ID must start with PC followed by four digits of number")
-            @RequestParam String categoryId) {
-        try {
-            List<ProductInfoEntity> product = productService.findAllByCategory(categoryId);
+            @RequestParam String categoryId) throws ClientException, NotFoundException {
+        List<ProductInfoEntity> product = productService.findAllByCategory(categoryId);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Request successfully");
-            response.setData(product);
-            return ResponseEntity.ok(response);
-        }
-        catch (ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        catch (Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Request successfully");
+        response.setData(product);
+        return ResponseEntity.ok(response);
     }
     //NEW JOIN
 
@@ -225,31 +123,13 @@ public class ProductController {
     public ResponseEntity<ResponseModel> getProductsByCategoryIdController(
             @NotBlank(message = "Product category ID is required")
             @Pattern(regexp = "^PC[0-9]{4}$", message = "Product category ID must start with PC followed by four digits of number")
-            @RequestParam String categoryId) {
-        try {
-            List<ProductEntity> product = productService.findProductsByCategoryId(categoryId);
+            @RequestParam String categoryId) throws ClientException, NotFoundException {
+        List<ProductEntity> product = productService.findProductsByCategoryId(categoryId);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Request successfully");
-            response.setData(product);
-            return ResponseEntity.ok(response);
-        }
-        catch (ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        catch (Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Request successfully");
+        response.setData(product);
+        return ResponseEntity.ok(response);
     }
     //NEW JOIN 2
 }

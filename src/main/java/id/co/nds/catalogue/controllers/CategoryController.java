@@ -6,7 +6,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -36,130 +35,55 @@ public class CategoryController {
     CategoryService categoryService;
 
     @PostMapping("/add")
-    public ResponseEntity<ResponseModel> postCategoryController(@Validated(PostingNew.class) @RequestBody CategoryModel categoryModel) {
-        try{
-            CategoryEntity category = categoryService.add(categoryModel);
+    public ResponseEntity<ResponseModel> postCategoryController(@Validated(PostingNew.class) @RequestBody CategoryModel categoryModel) throws ClientException {
+        CategoryEntity category = categoryService.add(categoryModel);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("New category is successfully added");
-            response.setData(category);
-            return ResponseEntity.ok(response);
-        }
-        catch(ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch(Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("New category is successfully added");
+        response.setData(category);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/get")
     public ResponseEntity<ResponseModel> getAllCategoryController() {
-        try {
-            List<CategoryEntity> category = categoryService.findAll();
+        List<CategoryEntity> category = categoryService.findAll();
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Request successfully");
-            response.setData(category);
-            return ResponseEntity.ok(response);
-        }
-        catch(Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Request successfully");
+        response.setData(category);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<ResponseModel> getCategoryByIdController(
             @NotBlank(message = "Category ID is required")
             @Pattern(regexp = "^PC[0-9]{4}$", message = "Category ID must start with PC followed by four digits of number")
-            @PathVariable String id) {
-        try {
-            CategoryEntity category = categoryService.findById(id);
+            @PathVariable String id) throws ClientException, NotFoundException {
+        CategoryEntity category = categoryService.findById(id);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Request successfully");
-            response.setData(category);
-            return ResponseEntity.ok(response);
-        }
-        catch(ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        catch(Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Request successfully");
+        response.setData(category);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ResponseModel> putCategoryController(@Validated(UpdatingById.class) @RequestBody CategoryModel categoryModel) {
-        try {
-            CategoryEntity category = categoryService.edit(categoryModel);
+    public ResponseEntity<ResponseModel> putCategoryController(@Validated(UpdatingById.class) @RequestBody CategoryModel categoryModel) throws ClientException, NotFoundException {
+        CategoryEntity category = categoryService.edit(categoryModel);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Category is successfully updated");
-            response.setData(category);
-            return ResponseEntity.ok(response);
-        }
-        catch(ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        catch(Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Category is successfully updated");
+        response.setData(category);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponseModel> deleteCategoryController (@Validated(DeletingById.class) @RequestBody CategoryModel categoryModel) {
-        try {
-            CategoryEntity category = categoryService.delete(categoryModel);
+    public ResponseEntity<ResponseModel> deleteCategoryController (@Validated(DeletingById.class) @RequestBody CategoryModel categoryModel) throws ClientException, NotFoundException {
+        CategoryEntity category = categoryService.delete(categoryModel);
 
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Category is successfully deleted");
-            response.setData(category);
-            return ResponseEntity.ok(response);
-        }
-        catch(ClientException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.badRequest().body(response);
-        }
-        catch (NotFoundException e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-        catch(Exception e) {
-            ResponseModel response = new ResponseModel();
-            response.setMsg("Sorry, there is a failure on our server.");
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(response);
-        }
+        ResponseModel response = new ResponseModel();
+        response.setMsg("Category is successfully deleted");
+        response.setData(category);
+        return ResponseEntity.ok(response);
     }
 }
