@@ -43,6 +43,14 @@ public class LoanService {
             throw new ClientException("Interest rate, loan amount, or loan term cannot be null");
         }
 
+        if(loanModel.getInterestRate().doubleValue() < 0 || loanModel.getInterestRate().doubleValue() >= 100) {
+            throw new ClientException("Interest rate between 0 to 99.99%");
+        }
+
+        if(loanModel.getLoanAmount().doubleValue() < 0 || loanModel.getLoanAmount().doubleValue() >= 100000000) {
+            throw new ClientException("Loan amount between 0 to 99,999,999.99");
+        }
+
         if(loanModel.getCustomerName() == null || loanModel.getCustomerName().trim().equalsIgnoreCase("")) {
             throw new ClientException("Customer name is required");
         }
