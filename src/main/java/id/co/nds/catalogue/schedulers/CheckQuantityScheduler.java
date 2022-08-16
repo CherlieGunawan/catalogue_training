@@ -36,14 +36,14 @@ public class CheckQuantityScheduler implements SchedulingConfigurer {
     @SuppressWarnings("rawtypes")
     private static ScheduledFuture future;
 
-    static final Logger logger = LogManager.getLogger(DbParamScheduler.class);
+    static final Logger logger = LogManager.getLogger(CheckQuantityScheduler.class);
     private static String cronVal = "";
     public static boolean stopScheduler = false;
 
     @Bean
     public TaskScheduler poolScheduler() {
         ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
-        scheduler.setThreadNamePrefix("DbParameterScheduler-ThreadPookTaskSchedule - ##");
+        scheduler.setThreadNamePrefix("CheckQuantityScheduler-ThreadPookTaskSchedule - ##");
         scheduler.setPoolSize(2);
         scheduler.initialize();
         return scheduler;
