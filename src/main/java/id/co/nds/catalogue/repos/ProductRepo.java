@@ -34,4 +34,7 @@ public interface ProductRepo extends JpaRepository<ProductEntity, Integer>, JpaS
             + "JOIN ms_category AS c ON p.category_id = c.id "
             + "WHERE p.category_id = ?1", nativeQuery = true)
     List<ProductEntity> findProductsByCategoryId(String categoryId);
+
+    @Query(value = "SELECT * FROM ms_product WHERE quantity < 5 AND rec_status = '" + GlobalConstant.REC_STATUS_ACTIVE + "'", nativeQuery = true)
+    List<ProductEntity> findProductsLessThan5Quantity();
 }

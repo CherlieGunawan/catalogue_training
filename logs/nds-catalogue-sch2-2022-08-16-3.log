@@ -1,0 +1,6 @@
+2022-08-16 14:29:35.200 DEBUG id.co.nds.catalogue.schedulers.FixedDelayScheduler - Start FixedDelayScheduler at Tue Aug 16 14:29:35 WIB 2022
+2022-08-16 14:29:35.201 INFO  id.co.nds.catalogue.schedulers.FixedDelayScheduler - Counter-A: 0
+2022-08-16 14:29:35.202 INFO  id.co.nds.catalogue.schedulers.FixedDelayScheduler - Counter-B: 0
+2022-08-16 14:29:50.205 DEBUG id.co.nds.catalogue.schedulers.FixedDelayScheduler - Start FixedDelayScheduler at Tue Aug 16 14:29:50 WIB 2022
+2022-08-16 14:29:50.205 INFO  id.co.nds.catalogue.schedulers.FixedDelayScheduler - Counter-A: 0
+2022-08-16 14:29:50.206 INFO  id.co.nds.catalogue.schedulers.FixedDelayScheduler - Counter-B: 1

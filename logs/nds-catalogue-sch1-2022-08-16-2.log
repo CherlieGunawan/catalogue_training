@@ -1,0 +1,24 @@
+2022-08-16 14:24:15.694 DEBUG id.co.nds.catalogue.schedulers.FixedRateScheduler - Start FixedRateScheduler at Tue Aug 16 14:24:15 WIB 2022
+2022-08-16 14:24:15.696 INFO  id.co.nds.catalogue.schedulers.FixedRateScheduler - Counter-A: 0
+2022-08-16 14:24:15.696 INFO  id.co.nds.catalogue.schedulers.FixedRateScheduler - Counter-B: 0
+2022-08-16 14:24:25.694 DEBUG id.co.nds.catalogue.schedulers.FixedRateScheduler - Start FixedRateScheduler at Tue Aug 16 14:24:25 WIB 2022
+2022-08-16 14:24:25.694 INFO  id.co.nds.catalogue.schedulers.FixedRateScheduler - Counter-A: 0
+2022-08-16 14:24:25.695 INFO  id.co.nds.catalogue.schedulers.FixedRateScheduler - Counter-B: 1
+2022-08-16 14:24:35.701 DEBUG id.co.nds.catalogue.schedulers.FixedRateScheduler - Start FixedRateScheduler at Tue Aug 16 14:24:35 WIB 2022
+2022-08-16 14:24:35.703 INFO  id.co.nds.catalogue.schedulers.FixedRateScheduler - Counter-A: 0
+2022-08-16 14:24:35.703 INFO  id.co.nds.catalogue.schedulers.FixedRateScheduler - Counter-B: 2
+2022-08-16 14:24:45.695 DEBUG id.co.nds.catalogue.schedulers.FixedRateScheduler - Start FixedRateScheduler at Tue Aug 16 14:24:45 WIB 2022
+2022-08-16 14:24:45.695 INFO  id.co.nds.catalogue.schedulers.FixedRateScheduler - Counter-A: 0
+2022-08-16 14:24:45.696 INFO  id.co.nds.catalogue.schedulers.FixedRateScheduler - Counter-B: 3
+2022-08-16 14:24:55.694 DEBUG id.co.nds.catalogue.schedulers.FixedRateScheduler - Start FixedRateScheduler at Tue Aug 16 14:24:55 WIB 2022
+2022-08-16 14:24:55.694 INFO  id.co.nds.catalogue.schedulers.FixedRateScheduler - Counter-A: 0
+2022-08-16 14:24:55.696 INFO  id.co.nds.catalogue.schedulers.FixedRateScheduler - Counter-B: 4
+2022-08-16 14:25:05.695 DEBUG id.co.nds.catalogue.schedulers.FixedRateScheduler - Start FixedRateScheduler at Tue Aug 16 14:25:05 WIB 2022
+2022-08-16 14:25:05.695 INFO  id.co.nds.catalogue.schedulers.FixedRateScheduler - Counter-A: 0
+2022-08-16 14:25:05.696 INFO  id.co.nds.catalogue.schedulers.FixedRateScheduler - Counter-B: 5
+2022-08-16 14:25:15.694 DEBUG id.co.nds.catalogue.schedulers.FixedRateScheduler - Start FixedRateScheduler at Tue Aug 16 14:25:15 WIB 2022
+2022-08-16 14:25:15.694 INFO  id.co.nds.catalogue.schedulers.FixedRateScheduler - Counter-A: 0
+2022-08-16 14:25:15.695 INFO  id.co.nds.catalogue.schedulers.FixedRateScheduler - Counter-B: 6
+2022-08-16 14:25:25.694 DEBUG id.co.nds.catalogue.schedulers.FixedRateScheduler - Start FixedRateScheduler at Tue Aug 16 14:25:25 WIB 2022
+2022-08-16 14:25:25.695 INFO  id.co.nds.catalogue.schedulers.FixedRateScheduler - Counter-A: 0
+2022-08-16 14:25:25.695 INFO  id.co.nds.catalogue.schedulers.FixedRateScheduler - Counter-B: 7

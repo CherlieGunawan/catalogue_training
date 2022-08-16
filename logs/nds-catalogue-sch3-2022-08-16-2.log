@@ -1,0 +1,12 @@
+2022-08-16 14:24:20.699 DEBUG id.co.nds.catalogue.schedulers.CronScheduler - Start CronScheduler at Tue Aug 16 14:24:20 WIB 2022
+2022-08-16 14:24:20.700 INFO  id.co.nds.catalogue.schedulers.CronScheduler - Counter-A: 0
+2022-08-16 14:24:20.700 INFO  id.co.nds.catalogue.schedulers.CronScheduler - Counter-B: 0
+2022-08-16 14:24:40.000 DEBUG id.co.nds.catalogue.schedulers.CronScheduler - Start CronScheduler at Tue Aug 16 14:24:40 WIB 2022
+2022-08-16 14:24:40.000 INFO  id.co.nds.catalogue.schedulers.CronScheduler - Counter-A: 0
+2022-08-16 14:24:40.000 INFO  id.co.nds.catalogue.schedulers.CronScheduler - Counter-B: 1
+2022-08-16 14:25:00.000 DEBUG id.co.nds.catalogue.schedulers.CronScheduler - Start CronScheduler at Tue Aug 16 14:25:00 WIB 2022
+2022-08-16 14:25:00.001 INFO  id.co.nds.catalogue.schedulers.CronScheduler - Counter-A: 0
+2022-08-16 14:25:00.002 INFO  id.co.nds.catalogue.schedulers.CronScheduler - Counter-B: 2
+2022-08-16 14:25:20.002 DEBUG id.co.nds.catalogue.schedulers.CronScheduler - Start CronScheduler at Tue Aug 16 14:25:20 WIB 2022
+2022-08-16 14:25:20.002 INFO  id.co.nds.catalogue.schedulers.CronScheduler - Counter-A: 0
+2022-08-16 14:25:20.003 INFO  id.co.nds.catalogue.schedulers.CronScheduler - Counter-B: 3

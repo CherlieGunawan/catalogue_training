@@ -175,4 +175,12 @@ public class ProductService implements Serializable {
         
         //return productRepo.save(product);
     }
+
+    //Check Quantity
+    public List<ProductEntity> findProductsLessThan5Quantity() {
+        List<ProductEntity> products = new ArrayList<>();
+        productRepo.findProductsLessThan5Quantity().forEach(products::add);
+
+        return products;
+    }
 }
